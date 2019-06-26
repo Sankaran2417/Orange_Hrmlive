@@ -1,0 +1,110 @@
+
+
+public class Assignment {
+
+//This method will be open chrome browser and maximized the browser
+@BeforeTest
+public void testSetUp() throws Exception{
+System.setProperty("webdriver.chrome.driver","./drivers/chromedriver.exe");
+WebDriver driver = new ChromeDriver();
+driver.manage().window().maximize();
+driver.manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);
+}
+
+//This method will be closed chrome browser after executed all test scenario's
+@AfterTest
+public void testTearDown() throws Exception{
+driver.quit();
+}
+
+
+//TS_PIM_01 - Check if the user is able to enter the Orange HRM system with a successful ESS-User account.
+@Test
+
+public void A_login_OrangeHRMsystem_with a successful() throws InterruptedException {
+driver.get("https://opensource-demo.orangehrmlive.com/");
+String login = driver.findElement(By.xpath("//div[@id='logInPanelHeading']")).getText();
+try{
+if(login.contains("LOGIN Panel")) {
+driver.findElement(By.xpath("//input[@id='txtUsername']")).click();
+driver.findElement(By.xpath("//input[@id='txtUsername']")).sendKeys("Admin");
+driver.findElement(By.xpath("//input[@id='txtPassword']")).click();
+driver.findElement(By.xpath("//input[@id='txtPassword']")).sendKeys("admin123");
+driver.findElement(By.xpath("//input[@id='btnLogin']")).click();
+Assert.assertTrue(true);
+} else {
+TestLogger.error("Login Fields are not existed in Login page.");
+Assert.assertTrue(false);
+}
+}catch(Exception e){
+System.out.println("Login Exception" + e);
+}
+}
+
+//TS_PIM_02 - Check if the user is able to see the “General Information” in organization tab under admin on logging in the first time
+@Test
+public void B_verify_General_Information() throws InterruptedException {
+WebElement e1 = driver.findElement(By.xpath("//a[@id='menu_admin_viewAdminModule']"));
+WebElement e2 = driver.findElement(By.xpath("//a[@id='menu_admin_Organization']"));
+String s1 = driver.findElement(By.xpath("//a[@id='menu_admin_viewOrganizationGeneralInformation']"));
+Actions act = new Actions(driver);
+act.moveToElement(e1).perform();
+act.moveToElement(e2).perform();
+if(s1.contains("General Information")){
+Assert.assertTrue(true);
+} else {
+Assert.assertTrue(false);
+}
+}
+
+
+//TS_PIM_03 - Check if the user is able to edit the fields other than the following and save changes in Contact details
+@Test
+public void C_verify_save changes() throws InterruptedException {
+driver.findElement(By.xpath("//input[@id='btnSaveGenInfo']")).click();
+driver.findElement(By.xpath("//input[@id='organization_name']")).click();
+driver.findElement(By.xpath("//input[@id='organization_name']")).clear();
+driver.findElement(By.xpath("//input[@id='organization_name']")).sendKeys("OrangeHRM (Pvt)-Singapore");
+driver.findElement(By.xpath("//input[@id='organization_taxId']")).click();
+driver.findElement(By.xpath("//input[@id='organization_taxId']")).clear();
+driver.findElement(By.xpath("//input[@id='organization_taxId']")).sendKeys("7654321");
+driver.findElement(By.xpath("//input[@id='organization_registraionNumber']")).click();
+driver.findElement(By.xpath("//input[@id='organization_registraionNumber']")).clear();
+driver.findElement(By.xpath("//input[@id='organization_registraionNumber']")).sendKeys("76543A");
+driver.findElement(By.xpath("//input[@id='organization_fax']")).click();
+driver.findElement(By.xpath("//input[@id='organization_fax']")).clear();
+driver.findElement(By.xpath("//input[@id='organization_fax']")).sendKeys("241784");
+driver.findElement(By.xpath("//input[@id='organization_note']")).click();
+driver.findElement(By.xpath("//input[@id='organization_note']")).clear();
+driver.findElement(By.xpath("//input[@id='organization_note']")).sendKeys("This is my assignment");
+driver.findElement(By.xpath("//input[@id='btnSaveGenInfo']")).click();
+}
+
+//TS_PIM_04 & 5 - Add new Employee under PIM, Employee list and Uplod the picture
+@Test
+public void D_add_New_EmployeeAndUpload_newPicture() throws InterruptedException {
+WebElement e3 = driver.findElement(By.xpath("//a[@id='menu_pim_viewPimModule']"));
+Actions a1 = new Actions(driver);
+a1.moveToElement(e3).perform();
+driver.findElement(By.xpath("//a[@id='menu_pim_viewEmployeeList']")).click();
+driver.findElement(By.xpath("//input[@id='btnAdd']")).click();
+driver.findElement(By.xpath("//input[@id='firstName']")).click();
+driver.findElement(By.xpath("//input[@id='firstName']")).sendKeys("Ramesh");
+driver.findElement(By.xpath("//input[@id='lastName']")).click();
+driver.findElement(By.xpath("//input[@id='lastName']")).sendKeys("Sankar");
+driver.findElement(By.xpath("//input[@id='photofile']")).click();
+Runtime.getRunTime.exec(C:\\Users\\AnanthiYoshika\\Desktop\\Ramesh);
+driver.findElement(By.xpath("//input[@id='btnSave']")).click();
+}
+
+//TS_PIM_06 - Mouse over on Employee Distribution by subunit graph
+@Test
+public void E_Hoveron_Dashboard() throws InterruptedException {
+driver.findElement(By.xpath("//a[@id='menu_dashboard_index']")).click();
+WebElement e4 = driver.findElement(By.xpath("//div[@id='div_graph_display_emp_distribution']//span"))
+
+Actions a2 = new Actions(driver);
+a2.movetoElement(e4).perform();
+}
+
+}
